@@ -1,20 +1,25 @@
 import axios from 'axios';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserData } from '../../Context/UserDataContext';
 import { UserProfile } from './../../Context/UserProfile';
 import { useQuery } from '@tanstack/react-query';
 import PostCard from './../../Components/PostCard/PostCard';
+import CommentsDrawer from '../../Components/CommentsDrawer/CommentsDrawer';
+
 
 export default function Profile() {
-  const {token} = useContext(UserData)
-  const {setUser} = useContext(UserProfile); 
+const [isOpen, setIsOpen] = useState(false);
+  const [userPostId, setUserPostId] = useState(null);
+  const handleClose = () => setIsOpen(false);
+  const [postId, setPostId] = useState(null);
 
-  const {data:User}= useQuery({
-    queryFn:getUser,
-    queryKey:["useData"],
-  })
+  const {token} = useContext(UserData)
+  const {user,setUser} = useContext(UserProfile); 
   
+  
+
+
   async function getUser() {
     try{
       const {data} = await axios.get('https://linked-posts.routemisr.com/users/profile-data',{
@@ -31,30 +36,44 @@ export default function Profile() {
       console.log(err);
     }
   }
+  const {data:User}= useQuery({
+    queryFn:getUser,
+    queryKey:["useData"],
+  })
+  
 
+  async function getUserPosts() {
+    
+    if(user._id){
+      // console.log(user._id);
+      
+          try{
+        const {data} = await axios.get(`https://linked-posts.routemisr.com/users/${user._id}/posts?limit=20`,{
+          headers:{
+            token
+          }
+        })
+        if(data.message=='success'){
+          return data.posts
+        }
+        console.log(data);
+        
+        
+    }catch(err){
+      console.log(err ,"from profile") ;
+    }
+    }
+
+  }
+  
   const {data:userPosts}=useQuery({
     queryFn: getUserPosts,
     queryKey:['userPosts']
   })
 
-  async function getUserPosts() {
-    try{
-        const {data} = await axios.get(`https://linked-posts.routemisr.com/users/${user?._id}/posts?limit=20`,{
-          headers:{
-            token
-          }
-        })
-
-        return data.posts
-        
-    }catch(err){
-      console.log(err ,"from profile") ;
-    }
-  }
-
-
   
   return <>
+  <title>Profile</title>
   <div className="my-25 max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700">
       <div className="p-8">
         <div className="flex flex-col items-center">
@@ -97,7 +116,8 @@ export default function Profile() {
     </div>
     <hr className='my-5 w-[80%] mx-auto'/>
 
-    {userPosts?.map((post)=> <PostCard post={post} key={user._id}/>)}
+    {userPosts?.map((post)=> <PostCard post={post} key={post._id} setUserPostId={setUserPostId} setPostId={setPostId} setIsOpen={setIsOpen}/>)}
+    <CommentsDrawer postId={postId} handleClose={handleClose} userPostId={userPostId} isOpen={isOpen}/>
 
   </>
 }

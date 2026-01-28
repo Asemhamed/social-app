@@ -45,6 +45,7 @@ async function sendData(userData){
   
   
   return <div className="mt-20">
+    <title>Register</title>
     <form onSubmit={handleSubmit(sendData)}  className="flex rounded p-7 mx-auto bg-slate-800 max-w-md md:my-10 justify-center flex-col gap-4 shadow-2xl">
       <div>
         <div className="mb-2 block">

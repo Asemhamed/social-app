@@ -40,7 +40,7 @@ export default function Home() {
     }
   }
 
-  const {register,handleSubmit}=useForm({
+  const {register,handleSubmit,reset}=useForm({
     defaultValues:{
       body:'',
       image:null
@@ -51,7 +51,8 @@ export default function Home() {
   const {mutate}=useMutation({
     mutationFn:addPost,
     onSuccess:()=>{
-      queryClinet.invalidateQueries(['allPosts'])
+      queryClinet.invalidateQueries(['allPosts']);
+      reset();
     },
     onError:()=>{
       console.log('errorrrrrrrrrrr');
@@ -81,6 +82,7 @@ export default function Home() {
 
 
   return <div className='my-20'>
+    <title>Home</title>
     <div className='container w-[80%] mx-auto '>
       <h2 className='text-2xl font-bold mb-5 text-center'>Add Post</h2>
       <form onSubmit={handleSubmit(mutate)}>
