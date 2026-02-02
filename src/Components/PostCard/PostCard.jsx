@@ -55,7 +55,7 @@ export default function PostCard({setUserPostId,post,setIsOpen,setPostId}) {
             </p>
           </div>
         </div>
-        {post.user._id === user._id &&<>
+        {post?.user?._id === user?._id &&<>
         <Dropdown color={'transparent' } className='text-white border-0' >
           <button className='p-2 cursor-pointer' onClick={mutate}>Delete</button>
         </Dropdown>
