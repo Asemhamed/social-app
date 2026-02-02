@@ -115,7 +115,7 @@ export default function CommentsDrawer({isOpen,handleClose,postId,userPostId}) {
             </span>
             <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 p-2 rounded-lg border border-gray-100 dark:border-gray-700">
               <p>{comment.content}</p>
-              {userPostId === user._id && <button onClick={()=>deleteComment(comment.id)} className="px-4 bg-slate-600 rounded hover:bg-red-700 transition cursor-pointer">Delete</button>}
+              {userPostId === user?._id && <button onClick={()=>deleteComment(comment.id)} className="px-4 bg-slate-600 rounded hover:bg-red-700 transition cursor-pointer">Delete</button>}
               </div>
           </div> )}
         </DrawerItems>

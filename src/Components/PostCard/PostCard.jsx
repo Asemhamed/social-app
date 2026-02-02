@@ -42,16 +42,16 @@ export default function PostCard({setUserPostId,post,setIsOpen,setPostId}) {
       <div className="p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img 
-            src={post.user.photo} 
-            alt={post.user.name} 
+            src={post?.user?.photo} 
+            alt={post?.user?.name} 
             className="w-10 h-10 rounded-full object-cover border border-gray-200"
           />
           <div>
             <h4 className="font-bold text-gray-900 dark:text-white text-sm leading-tight">
-              {post.user.name}
+              {post?.user?.name}
             </h4>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              {new Date(post.createdAt).toLocaleString()}
+              {new Date(post?.createdAt).toLocaleString()}
             </p>
           </div>
         </div>
