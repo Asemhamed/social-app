@@ -44,8 +44,8 @@ export default function NavApp() {
           }
         >
           <DropdownHeader>
-            <span className="block text-sm capitalize">{user.name}</span>
-            <span className="block truncate text-sm font-medium">{user.email}</span>
+            <span className="block text-sm capitalize">{user?.name}</span>
+            <span className="block truncate text-sm font-medium">{user?.email}</span>
           </DropdownHeader>
           <DropdownDivider />
           <DropdownItem onClick={logout}>Sign out</DropdownItem>
