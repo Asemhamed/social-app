@@ -40,7 +40,7 @@ export default function NavApp() {
           arrowIcon={false}
           inline
           label={
-            <Avatar alt="User settings" img={user.photo} rounded />
+            <Avatar alt="User settings" img={user?.photo} rounded />
           }
         >
           <DropdownHeader>
