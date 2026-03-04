@@ -13,7 +13,7 @@ import Notifications from './src/Pages/Notifications/Notifications';
 import MyPosts from './src/Pages/myPosts/MyPosts';
 import Saved from './src/Pages/Saved/Saved';
 import Posts from "./src/Pages/Posts/Posts";
-import FriendProfile from "./src/Pages/friendProfile/friendProfile";
+import FriendProfile from './src/Pages/friendProfile/FriendProfile';
 
 export const routes = createBrowserRouter([
     {path:'/',element:<Layout/>,children:[

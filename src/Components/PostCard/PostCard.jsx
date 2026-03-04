@@ -201,14 +201,13 @@ export default function PostCard({post,details}) {
   
 
 
-return(<div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-visible relative my-5">
+return<div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-visible relative my-5">
         {details&&<Link to="/" className="p-3 inline-flex items-center text-gray-500 hover:text-blue-600 mb-6 transition-colors">
         <ArrowLeft size={18} className="mr-2" /> Back to feed
       </Link>}
       <div className="flex items-center justify-between p-4">
         <Link to={`/friendProfile/${post.user._id}`} className="flex items-center gap-3">
           <img 
-<<<<<<< HEAD
             src={post.user?.photo} 
             className="h-10 w-10 rounded-full object-cover border border-gray-50" 
             alt={post.user?.name} 
@@ -217,19 +216,7 @@ return(<div className="bg-white rounded-2xl border border-gray-100 shadow-sm ove
             <h4 className="text-sm font-bold text-gray-900 hover:underline">{post.user?.name} <span className='text-[10px] text-gray-400 ms-2'>{savePost&&'Saved'}</span></h4>
             <p className="text-[11px] text-gray-400 font-medium tracking-wide uppercase">
               {new Date(post.createdAt).toLocaleString()}
-=======
-            src={post?.user?.photo} 
-            alt={post?.user?.name} 
-            className="w-10 h-10 rounded-full object-cover border border-gray-200"
-          />
-          <div>
-            <h4 className="font-bold text-gray-900 dark:text-white text-sm leading-tight">
-              {post?.user?.name}
-            </h4>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              {new Date(post?.createdAt).toLocaleString()}
->>>>>>> bd87a36adbba1675b827c31c4cddfea46deecab8
-            </p>
+              </p>
           </div>
         </Link>
 
@@ -263,15 +250,13 @@ return(<div className="bg-white rounded-2xl border border-gray-100 shadow-sm ove
             </div>
           )}
         </div>
-<<<<<<< HEAD
-=======
+
         {post?.user?._id === user?._id &&<>
         <Dropdown color={'transparent' } className='text-white border-0' >
           <button className='p-2 cursor-pointer' onClick={mutate}>Delete</button>
         </Dropdown>
         </>     
 }
->>>>>>> bd87a36adbba1675b827c31c4cddfea46deecab8
       </div>
 
       <div className="px-4 pb-3">
@@ -355,7 +340,7 @@ return(<div className="bg-white rounded-2xl border border-gray-100 shadow-sm ove
           </div>
         )}
       </div>
-    </div>);
+    </div>;
 
 }
 
