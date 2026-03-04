@@ -30,12 +30,37 @@ export default function NavApp() {
     }, 2000);
   }
   
+<<<<<<< HEAD
 const linkStyle = ({ isActive }) =>
     `relative px-3 py-2 text-sm font-medium transition-all duration-300 flex gap-2 ${
       isActive 
         ? "text-blue-600 dark:text-blue-600" 
         : "text-gray-900 hover:text-blue-600 dark:text-dark dark:hover:text-dark"
     }`;
+=======
+  return <>
+  <Navbar fluid  className=" fixed w-full ">
+      <NavbarBrand href="https://flowbite-react.com" className="me-auto">
+        <img src="https://flowbite.com/docs/images/logo.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
+        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Social App</span>
+      </NavbarBrand>
+      <div className="flex md:order-2 ">
+        {token &&<Dropdown
+          arrowIcon={false}
+          inline
+          label={
+            <Avatar alt="User settings" img={user?.photo} rounded />
+          }
+        >
+          <DropdownHeader>
+            <span className="block text-sm capitalize">{user?.name}</span>
+            <span className="block truncate text-sm font-medium">{user?.email}</span>
+          </DropdownHeader>
+          <DropdownDivider />
+          <DropdownItem onClick={logout}>Sign out</DropdownItem>
+        </Dropdown>
+}
+>>>>>>> bd87a36adbba1675b827c31c4cddfea46deecab8
 
   const activeIndicator = ({ isActive }) =>
     isActive ? "absolute bottom-0 left-0 h-0.5 w-full bg-blue-600 scale-x-100 transition-transform" : "scale-x-0";
