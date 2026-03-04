@@ -9,13 +9,24 @@ import GuardEnter from "./src/Components/GuardEnter/GuardEnter";
 import GuardOut from "./src/Components/GuardOut/GuardOut";
 import ChangePass from "./src/Pages/ChangePass/ChangePass";
 import PostDetails from "./src/Pages/PostDetails/PostDetails";
+import Notifications from './src/Pages/Notifications/Notifications';
+import MyPosts from './src/Pages/myPosts/MyPosts';
+import Saved from './src/Pages/Saved/Saved';
+import Posts from "./src/Pages/Posts/Posts";
+import FriendProfile from "./src/Pages/friendProfile/friendProfile";
 
 export const routes = createBrowserRouter([
     {path:'/',element:<Layout/>,children:[
-        {index:true,element:<GuardOut><Home/></GuardOut> },
+        {path:'/',element:<GuardOut><Home/></GuardOut>,children:[
+            {index:true,element:<Posts/>},
+            {path:'myPosts',element:<MyPosts/>},
+            {path:'saved',element:<Saved/>}
+        ] },
         {path:'/profile',element:<GuardOut><Profile/></GuardOut>},
+        {path:'/notifications',element:<GuardOut><Notifications/></GuardOut>},
         {path:'/changepass',element:<ChangePass/>},
         {path:'/postdetails/:id',element:<PostDetails/>},
+        {path:'/friendProfile/:id',element:<FriendProfile/>},
         {path:'/login',element:<GuardEnter><Login/></GuardEnter> },
         {path:'/register',element: <GuardEnter><Register/></GuardEnter> },
         {path:'*',element:<NotFound/>}

@@ -1,37 +1,41 @@
-import Skeleton from 'react-loading-skeleton';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { Card } from 'flowbite-react'; // Assuming you are using Flowbite based on your classNames
+import { Card } from 'flowbite-react';
 
-const PostSkeleton = () => {
+export default function PostSkeleton() {
   return (
-    <Card className="max-w-xl mx-auto my-4 text-white">
-      {/* Header: User Profile Info */}
-      <div className="flex gap-4 items-center">
-        {/* Circle Skeleton for Profile Photo */}
-        <Skeleton circle width={40} height={40} />
-        <div className="flex-1">
-          {/* Line for Name */}
-          <Skeleton width="40%" height={20} />
-          {/* Line for Date */}
-          <Skeleton width="25%" height={15} />
+    // SkeletonTheme handles the colors globally for all nested Skeletons
+    <SkeletonTheme baseColor="#e0e0e0" highlightColor="#f5f5f5">
+      {/* Added !bg-white and !border-gray-200 to force override dark mode themes */}
+      <Card className="max-w-xl mx-auto my-4 !bg-white !border-gray-200 shadow-sm">
+        
+        {/* Header */}
+        <div className="flex gap-4 items-center">
+          <Skeleton circle width={40} height={40} />
+          <div className="flex-1">
+            <Skeleton width="40%" height={20} />
+            <Skeleton width="25%" height={15} />
+          </div>
         </div>
-      </div>
 
-      <hr className="my-2 border-gray-700" />
+        <hr className="my-2 border-gray-100" />
 
-      {/* Post Body Text */}
-      <div className="mb-4">
-        <Skeleton count={2} height={24} />
-      </div>
+        {/* Content */}
+        <div className="mb-4">
+          <Skeleton count={2} height={24} />
+        </div>
 
-      {/* Main Post Image */}
-      <div className="rounded overflow-hidden">
-        <Skeleton height={300} />
-      </div>
+        {/* Image */}
+        <div className="rounded overflow-hidden">
+          <Skeleton height={300} />
+        </div>
 
-      <hr className="my-2 border-gray-700" />
-    </Card>
+        {/* Footer (Optional: added for a more complete look) */}
+        <div className="flex gap-4 mt-2">
+            <Skeleton width={60} height={30} />
+            <Skeleton width={60} height={30} />
+        </div>
+      </Card>
+    </SkeletonTheme>
   );
-};
-
-export default PostSkeleton;
+}

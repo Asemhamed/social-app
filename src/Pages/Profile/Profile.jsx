@@ -1,123 +1,227 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
+import { Bookmark, Camera, Grid } from 'lucide-react';
+import { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import EmptyPosts from '../../Components/EmptyPosts/EmptyPosts';
+import Loader from '../../Components/Loader/Loader';
+import PostCard from '../../Components/PostCard/PostCard';
+import TabButtonProfile from '../../Components/TabButtonProfile/TabButtonProfile';
 import { UserData } from '../../Context/UserDataContext';
-import { UserProfile } from './../../Context/UserProfile';
-import { useQuery } from '@tanstack/react-query';
-import PostCard from './../../Components/PostCard/PostCard';
-import CommentsDrawer from '../../Components/CommentsDrawer/CommentsDrawer';
+import { UserProfile } from '../../Context/UserProfile';
+import ProfileSkeleton from './../../Components/ProfileSkeleton/ProfileSkeleton';
 
-
-export default function Profile() {
-const [isOpen, setIsOpen] = useState(false);
-  const [userPostId, setUserPostId] = useState(null);
-  const handleClose = () => setIsOpen(false);
-  const [postId, setPostId] = useState(null);
+export default function Profile(){
+  const queryClinet = useQueryClient();
+  const [view, setView] = useState('posts');
 
   const {token} = useContext(UserData)
-  const {user,setUser} = useContext(UserProfile); 
-  
-  
+  const {user:User} = useContext(UserProfile); 
 
 
-  async function getUser() {
-    try{
-      const {data} = await axios.get('https://linked-posts.routemisr.com/users/profile-data',{
-        headers:{
-          token
-        }
-      });
-      if(data.message=='success'){
-        localStorage.setItem('user',data.user);
-        setUser(data.user);
-        return data.user;
-      }
-    }catch(err){
-      console.log(err);
-    }
-  }
-  const {data:User}= useQuery({
-    queryFn:getUser,
-    queryKey:["useData"],
-  })
-  
 
-  async function getUserPosts() {
+async function getUserPosts() {
     
-    if(user._id){
-      // console.log(user._id);
-      
+    if(User._id){
           try{
-        const {data} = await axios.get(`https://linked-posts.routemisr.com/users/${user._id}/posts?limit=20`,{
+        const {data} = await axios.get(`https://route-posts.routemisr.com/users/${User._id}/posts`,{
           headers:{
-            token
-          }
-        })
-        if(data.message=='success'){
-          return data.posts
+        AUTHORIZATION:`Bearer ${token}`
         }
-        console.log(data);
+        })
+          return data.data.posts || []
+        
+        
+    }catch(err){
+      throw err
+    }
+    }else{
+      return []
+    }
+
+  }
+  
+  const {data:userPosts=[],isLoading}=useQuery({
+    queryFn: getUserPosts,
+    queryKey:['userPosts',token],
+    enabled:!!token
+  })
+
+
+     async function getSavedPosts() {
+          try{
+        const {data} = await axios.get(`https://route-posts.routemisr.com/users/bookmarks`,{
+          headers:{
+        AUTHORIZATION:`Bearer ${token}`
+        }
+        })
+        if(data.success){
+          return data.data.bookmarks || []
+        }
         
         
     }catch(err){
       console.log(err ,"from profile") ;
     }
-    }
+
 
   }
   
-  const {data:userPosts}=useQuery({
-    queryFn: getUserPosts,
-    queryKey:['userPosts']
+  const {data:savedPosts=[]}=useQuery({
+    queryFn: getSavedPosts,
+    queryKey:['savedPosts'],
+    enabled:!!token
+  })
+  
+  
+
+    const {register,handleSubmit}=useForm({
+    defaultValues:{
+      photo:''
+    }
   })
 
-  
-  return <>
-  <title>Profile</title>
-  <div className="my-25 max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700">
-      <div className="p-8">
-        <div className="flex flex-col items-center">
-          <img 
-            className="w-24 h-24 rounded-full object-cover border-4 border-blue-500 p-1" 
-            src={User?.photo}
-          />
-          
-          {/* Name and Role */}
-          <div className="mt-4 text-center">
-            <h2 className=" uppercase text-2xl font-bold text-gray-900 dark:text-white">
-              {User?.name}
-            </h2>
-            <p className="text-blue-600 dark:text-blue-400 font-medium">
-              {User?.gender}
-            </p>
+    const {mutate:upload, isPending:isUploading}=useMutation({
+    mutationFn:uploadPhoto,
+    onSuccess:()=>{
+      queryClinet.invalidateQueries(['useData']);
+    },
+  })
+
+
+
+  async function uploadPhoto(data){ 
+
+    try{
+      const formData = new FormData();
+        formData.append('photo',data.photo[0]);
+        
+      const {data:res}=await axios.put('https://route-posts.routemisr.com/users/upload-photo',formData,{
+        headers:{
+        AUTHORIZATION:`Bearer ${token}`
+        }
+      })
+      if(res.success){
+        return res.data.photo;
+      }
+      
+    }catch(err){
+      console.log(err);
+      throw err
+      
+    }
+  }
+
+
+
+  if(isLoading ){
+    return <ProfileSkeleton />
+  }
+
+
+
+
+  return (
+    <div className="max-w-6xl mx-auto  min-h-screen pb-10 rounded-2xl overflow-hidden mt-20 bg-white">
+      <div className="relative h-32 sm:h-48 md:h-64 bg-gray-200 ">
+        <img 
+          src={User.cover?User.cover:`https://images.unsplash.com/photo-1506744038136-46273834b3fb`} 
+          className="w-full h-full object-cover" 
+          alt="Cover" 
+        />
+
+        <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 sm:left-8 sm:translate-x-0">
+          <div className="relative group">
+            <img 
+              src={User.photo} 
+              className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white object-cover shadow-md" 
+              alt="Profile"
+            />
+
+              <form onSubmit={handleSubmit(upload)}>
+                <label className="absolute cursor-pointer bottom-0 right-0 p-2 bg-blue-600 rounded-full text-white border-2 border-white hover:scale-110 transition">
+                  {isUploading?<Loader/>:<Camera size={14} />}
+                  <input 
+                    type="file" 
+                    {...register("photo",{
+                        onChange: () => {
+                          handleSubmit(upload)();
+                        }
+                      })} 
+                    hidden
+                    accept="image/*"
+                  />
+                </label>
+              </form>
           </div>
-
-          {/* Bio */}
-          <p className="mt-4 text-gray-600 dark:text-gray-300 text-center text-sm leading-relaxed">
-            {User?.email}
-          </p>
-
-          {/* Info Rows */}
-          <div className="mt-6 w-full space-y-3">
-            <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
-              Created At : {new Date(User?.createdAt).toLocaleDateString()}
-            </div>
-            <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
-              Date Of Birth : {User?.dateOfBirth}
-            </div>
-          </div>
-
-          {/* Action Button */}
-          <Link to='/changepass' className=" text-center mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200">
-            Change Password
-          </Link>
         </div>
       </div>
+
+      <div className="mt-12 sm:mt-16 px-4 sm:px-8 bg-white">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
+          <div className="text-center sm:text-left">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{User.name}</h1>
+            <div className="flex items-center justify-center sm:justify-start text-gray-500 mt-1">
+              <span className="text-xs sm:text-sm">@{User.username}</span>
+            </div>
+            <div className="flex items-center justify-center sm:justify-start text-gray-500 mt-1">
+              <span className="text-xs sm:text-sm">{User.email}</span>
+            </div>
+          </div>
+            <Link to='/changepass' className=" text-center mt-4   bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200">
+              Change Password 
+            </Link>
+          
+        </div>
+
+        <div className="flex justify-around sm:justify-start sm:gap-10 mt-8 py-4 border-y sm:border-none border-gray-100">
+            <div className="text-center sm:text-left">
+                <span className="font-bold text-lg block leading-tight">{userPosts.length}</span>
+                <span className="text-gray-500 text-xs sm:text-sm uppercase tracking-wide">Posts</span>
+            </div>
+            <div className="text-center sm:text-left">
+                <span className="font-bold text-lg block leading-tight">{User.followersCount}</span>
+                <span className="text-gray-500 text-xs sm:text-sm uppercase tracking-wide">Followers</span>
+            </div>
+            <div className="text-center sm:text-left">
+                <span className="font-bold text-lg block leading-tight">{User.followingCount}</span>
+                <span className="text-gray-500 text-xs sm:text-sm uppercase tracking-wide">Following</span>
+            </div>
+
+        </div>
+      </div>
+
+      <div className="flex mt-2 border-t sm:border-t-0 ">
+        <TabButtonProfile 
+          active={view === 'posts'} 
+          onClick={() => setView('posts')} 
+          icon={<Grid size={18} />} 
+          label={`Posts (${userPosts.length})`} 
+        />
+        <TabButtonProfile
+          active={view === 'saved'} 
+          onClick={() => setView('saved')} 
+          icon={<Bookmark size={18} />} 
+          label={`Saved (${savedPosts.length})`} 
+        />
+      </div>
+
+      {view ==='posts'&&<div className="mt-3 bg-gray-200">
+        {userPosts.length > 0  ? userPosts.map(post => (<PostCard key={post._id} post={post} details={false} />))
+                  :
+                  <EmptyPosts/>
+                  }
+      </div>}
+      {view ==='saved'&&<div className="mt-3 bg-gray-200">
+        {savedPosts.length > 0   ? savedPosts.map(post => (<PostCard key={post._id} post={post} details={false} />))
+                  :
+                  <EmptyPosts/>
+                  }
+      </div>}
     </div>
-    <hr className='my-5 w-[80%] mx-auto'/>
+  );
+};
 
-    {userPosts?.map((post)=> <PostCard post={post} key={post._id} setUserPostId={setUserPostId} setPostId={setPostId} setIsOpen={setIsOpen}/>)}
-    <CommentsDrawer postId={postId} handleClose={handleClose} userPostId={userPostId} isOpen={isOpen}/>
 
-  </>
-}
+
