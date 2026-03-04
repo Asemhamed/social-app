@@ -84,9 +84,6 @@ const linkStyle = ({ isActive }) =>
                     <Link to="/profile" onClick={()=>setIsDropdownOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors">
                       <User size={16} /> Profile
                     </Link>
-                    <Link to="/settings" onClick={()=>setIsDropdownOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors">
-                      <Settings size={16} /> Settings
-                    </Link>
                     <button onClick={()=>{logout();setIsDropdownOpen(false)}}  className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 rounded-xl transition-colors">
                       <LogOut size={16} /> Sign out
                     </button>
