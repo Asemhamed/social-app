@@ -1,15 +1,15 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { ArrowLeft, Bookmark, Heart, MessageCircle, MoreHorizontal, Save, Send, Share2,Trash2 } from 'lucide-react';
+import { ArrowLeft, Bookmark, Heart, MessageCircle, MoreHorizontal, Send, Trash2 } from 'lucide-react';
 import { useContext, useState } from 'react';
-import { UserProfile } from '../../Context/UserProfile';
-import { UserData } from './../../Context/UserDataContext';
 import { useForm } from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
-import Loader from '../Loader/Loader.jsx';
 import { Link } from 'react-router-dom';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { AddCommentSchema } from '../../../schemaValidation.jsx';
+import { UserProfile } from '../../Context/UserProfile';
+import Loader from '../Loader/Loader.jsx';
+import { UserData } from './../../Context/UserDataContext';
 
 
 
@@ -139,7 +139,8 @@ export default function PostCard({post,details}) {
         
         
     }catch(err){
-      throw err
+      console.log(err);
+      
     }
 
 
@@ -230,6 +231,7 @@ return<div className="bg-white rounded-2xl border border-gray-100 shadow-sm over
 
           {isMenuOpen && (
             <div className="absolute right-0 mt-2 w-40 z-10 bg-white rounded-xl border border-gray-100 shadow-xl p-1 animate-in zoom-in-95 duration-150">
+              {post?.user?._id === user?._id&&
               <button 
                 disabled={isDeleting}
                 onClick={()=>{deletePost();setIsMenuOpen(false)}}
@@ -237,7 +239,8 @@ return<div className="bg-white rounded-2xl border border-gray-100 shadow-sm over
               >
                 
                 {isDeleting ? <Loader/> :<> <Trash2 size={16} /> Delete Post</>}
-              </button>
+              </button>}
+
               <button 
                 disabled={isPending}
                 onClick={()=>{mark();setIsMenuOpen(false)}}
@@ -251,12 +254,7 @@ return<div className="bg-white rounded-2xl border border-gray-100 shadow-sm over
           )}
         </div>
 
-        {post?.user?._id === user?._id &&<>
-        <Dropdown color={'transparent' } className='text-white border-0' >
-          <button className='p-2 cursor-pointer' onClick={mutate}>Delete</button>
-        </Dropdown>
-        </>     
-}
+
       </div>
 
       <div className="px-4 pb-3">
