@@ -14,13 +14,13 @@ import { UserData } from './../../Context/UserDataContext';
 
 
 export default function PostCard({post,details}) {
+  const {token} = useContext(UserData);
+  const {user} = useContext(UserProfile);
   const [showComments, setShowComments] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [savePost,setSavePost] = useState(localStorage.getItem(`save${post.id}`));
-  const [likePost,setLikePost] = useState(localStorage.getItem(`like${post.id}`));
-  const {token} = useContext(UserData);
+  const [savePost,setSavePost] = useState(localStorage.getItem(`save${post.id}${token}`));
+  const [likePost,setLikePost] = useState(localStorage.getItem(`like${post.id}${token}`));
   const queryClient = useQueryClient();
-  const {user} = useContext(UserProfile);
 
       
       
@@ -94,7 +94,7 @@ export default function PostCard({post,details}) {
               }
             })
             setSavePost(data.data.bookmarked);
-            localStorage.setItem(`save${post.id}`,data.data.bookmarked)
+            localStorage.setItem(`save${post.id}${token}`,data.data.bookmarked)
             return data.data.bookmarksCount || []
         }catch(err){
           console.log(err);
@@ -118,7 +118,7 @@ export default function PostCard({post,details}) {
               }
             })
             setLikePost(data.data.liked);
-            localStorage.setItem(`like${post.id}`,data.data.liked);
+            localStorage.setItem(`like${post.id}${token}`,data.data.liked);
             return data.data.likesCount || []
         }catch(err){
           console.log(err);
