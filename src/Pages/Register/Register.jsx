@@ -78,12 +78,12 @@ async function sendData(userData){
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="text-xs font-bold text-gray-700 uppercase ml-1 mb-1 block">Full Name</label>
-              <input {...register('name')} type="text" placeholder="John Doe" className={inputStyle(errors.name)} />
+              <input {...register('name')} type="text" placeholder="Your Name" className={inputStyle(errors.name)} />
               {errors.name && <p className="text-red-500 text-[10px] mt-1 ml-1">{errors.name.message}</p>}
             </div>
             <div>
               <label className="text-xs font-bold text-gray-700 uppercase ml-1 mb-1 block">Username</label>
-              <input {...register('username')} type="text" placeholder="johndoe123" className={inputStyle(errors.username)} />
+              <input {...register('username')} type="text" placeholder="name123" className={inputStyle(errors.username)} />
               {errors.username && <p className="text-red-500 text-[10px] mt-1 ml-1">{errors.username.message}</p>}
             </div>
           </div>
