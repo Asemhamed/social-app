@@ -103,8 +103,8 @@ return(
         <div className="grid  grid-cols-1 gap-4 lg:grid-cols-12">
           
 
-          <aside className="  lg:block   lg:col-span-3  ">
-            <div className="w-full translate-x-6   lg:fixed lg:top-24 lg:w-[240px] space-y-2 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+          <aside className="  lg:block   lg:col-span-3    ">
+            <div className=" lg:translate-x-6  lg:fixed   lg:top-24 lg:w-[240px] space-y-2 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
               <NavLink to={'/'} className={linkStyle}><HomeIcon size={20}/> Home</NavLink>
               <NavLink to={'/myPosts'} className={linkStyle}><Layout size={20}/> My Posts</NavLink>
               <NavLink to={'/saved'} className={linkStyle}><Bookmark size={20}/> Saved</NavLink>
