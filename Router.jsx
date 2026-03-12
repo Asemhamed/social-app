@@ -18,7 +18,7 @@ import FriendProfile from './src/Pages/friendProfile/FriendProfile';
 export const routes = createBrowserRouter([
     {path:'/',element:<Layout/>,children:[
         {path:'/',element:<GuardOut><Home/></GuardOut>,children:[
-            {index:true,element:<Posts/>},
+            {index:true,element:<GuardOut><Posts/></GuardOut> },
             {path:'myPosts',element:<MyPosts/>},
             {path:'saved',element:<Saved/>}
         ] },
