@@ -113,7 +113,7 @@ export default function PostCard({ post, details }) {
 
   function handleMark() {
     setIsSave(!isSvae);
-    mark()
+    putMark()
   }
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-visible relative my-5">
