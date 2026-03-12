@@ -1,92 +1,26 @@
-import React, { useContext } from 'react'
-import { useParams } from 'react-router-dom';
-import { UserData } from '../../Context/UserDataContext';
-import axios from 'axios';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import ProfileSkeleton from '../../Components/ProfileSkeleton/ProfileSkeleton';
-import TabButtonProfile from '../../Components/TabButtonProfile/TabButtonProfile';
 import { Grid } from 'lucide-react';
+import { useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import EmptyPosts from '../../Components/EmptyPosts/EmptyPosts';
-import Loader from './../../Components/Loader/Loader';
 import PostCard from '../../Components/PostCard/PostCard';
+import ProfileSkeleton from '../../Components/ProfileSkeleton/ProfileSkeleton';
+import { UserData } from '../../Context/UserDataContext';
+import useGetFriend from '../../Hooks/useGetFriend';
+import useGetFriendPosts from '../../Hooks/useGetFriendPosts';
+import usePutFollow from '../../Hooks/usePutFollow';
+import Loader from './../../Components/Loader/Loader';
 
 export default function FriendProfile() {
     const {id} = useParams();
     const {token} = useContext(UserData);
+    const{data,isLoading}=useGetFriend(id,token);
+    const {friendPosts}=useGetFriendPosts(id,token)
+    const {followMT,isFollow}=usePutFollow(id,token)
 
 
 
-    const {data,isLoading}=useQuery({
-        queryFn:getFriend,
-        queryKey:['friend',id],
-        enabled:!!token
-    })
+
     
-
-    async function getFriend(){
-        try{
-            const {data} = await axios.get(`https://route-posts.routemisr.com/users/${id}/profile`,{
-                headers:{
-                    Authorization:`Bearer ${token}`
-                }
-            });
-            return data.data || [];
-
-        }catch(err){
-            console.log(err);
-        }
-        
-    }
-
-    async function getFriendPosts() {
-    
-    if(id){
-          try{
-        const {data} = await axios.get(`https://route-posts.routemisr.com/users/${id}/posts`,{
-          headers:{
-        AUTHORIZATION:`Bearer ${token}`
-        }
-        })
-          return data.data.posts || []
-        
-        
-    }catch(err){
-      throw err
-    }
-    }else{
-      return []
-    }
-
-}
-
-    const {data:friendPosts=[]}=useQuery({
-    queryFn: getFriendPosts,
-    queryKey:['userPosts',id],
-    enabled:!!token
-})
-    
-    const queryClinet = useQueryClient()
-    const {mutate:followMT,isPending:isFollow}=useMutation({
-        mutationFn:putFollow,
-        onSuccess:()=>{
-        queryClinet.invalidateQueries(['friend',id])
-        }
-    })
-        
-
-    async function putFollow(){
-        try{
-            const {data} = await axios.put(`https://route-posts.routemisr.com/users/${id}/follow`,{},{
-              headers:{
-                AUTHORIZATION:`Bearer ${token}`
-              }
-            })
-            return data.data.followersCount || []
-        }catch(err){
-        throw err
-        }
-
-    }
 
     if(isLoading ){
     return <ProfileSkeleton />

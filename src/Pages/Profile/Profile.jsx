@@ -11,6 +11,8 @@ import TabButtonProfile from '../../Components/TabButtonProfile/TabButtonProfile
 import { UserData } from '../../Context/UserDataContext';
 import { UserProfile } from '../../Context/UserProfile';
 import ProfileSkeleton from './../../Components/ProfileSkeleton/ProfileSkeleton';
+import useGetUserPosts from './../../Hooks/useGetUserPosts';
+import useGetSavePosts from './../../Hooks/useGetSavePosts';
 
 export default function Profile(){
   const queryClinet = useQueryClient();
@@ -18,63 +20,8 @@ export default function Profile(){
 
   const {token} = useContext(UserData)
   const {user:User} = useContext(UserProfile); 
-
-
-
-async function getUserPosts() {
-    
-    if(User._id){
-          try{
-        const {data} = await axios.get(`https://route-posts.routemisr.com/users/${User._id}/posts`,{
-          headers:{
-        AUTHORIZATION:`Bearer ${token}`
-        }
-        })
-          return data.data.posts || []
-        
-        
-    }catch(err){
-      throw err
-    }
-    }else{
-      return []
-    }
-
-  }
-  
-  const {data:userPosts=[],isLoading}=useQuery({
-    queryFn: getUserPosts,
-    queryKey:['userPosts',token],
-    enabled:!!token
-  })
-
-
-     async function getSavedPosts() {
-          try{
-        const {data} = await axios.get(`https://route-posts.routemisr.com/users/bookmarks`,{
-          headers:{
-        AUTHORIZATION:`Bearer ${token}`
-        }
-        })
-        if(data.success){
-          return data.data.bookmarks || []
-        }
-        
-        
-    }catch(err){
-      console.log(err ,"from profile") ;
-    }
-
-
-  }
-  
-  const {data:savedPosts=[]}=useQuery({
-    queryFn: getSavedPosts,
-    queryKey:['savedPosts'],
-    enabled:!!token
-  })
-  
-  
+  const {isLoading,userPosts}=useGetUserPosts(User,token);
+  const {savedPosts}=useGetSavePosts(token);
 
     const {register,handleSubmit}=useForm({
     defaultValues:{

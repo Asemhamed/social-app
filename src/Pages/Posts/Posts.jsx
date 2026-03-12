@@ -1,35 +1,14 @@
-import React, { useContext } from 'react'
-import { UserData } from '../../Context/UserDataContext';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import PostSkeleton from '../../Components/PostSkeleton/PostSkeleton';
-import PostCard from '../../Components/PostCard/PostCard';
+import { useContext } from 'react';
 import EmptyPosts from '../../Components/EmptyPosts/EmptyPosts';
+import PostCard from '../../Components/PostCard/PostCard';
+import PostSkeleton from '../../Components/PostSkeleton/PostSkeleton';
+import { UserData } from '../../Context/UserDataContext';
+import useGetPosts from '../../Hooks/useGetPosts';
 
 export default function Posts() {
     const{token}=useContext(UserData);
+    const {isLoading,posts}=useGetPosts(token)
 
-    const {data:posts,isLoading}=useQuery({
-    queryFn:getAllPosts,
-    queryKey:["allPosts"]
-  })
-
-
-
-  async function getAllPosts(){
-    try{
-      const {data}= await axios.get('https://route-posts.routemisr.com/posts?limit=50&sort=-createdAt',{
-        headers:{
-        AUTHORIZATION:`Bearer ${token}`
-        }
-      });
-
-      if(data.success){
-        return data.data.posts
-      }}catch(err){
-      console.log(err);
-    }
-  }
 
   if(isLoading){
     return <PostSkeleton />

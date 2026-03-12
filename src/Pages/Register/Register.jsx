@@ -54,6 +54,7 @@ async function sendData(userData){
     gender:""
     }
   })
+  
   const inputStyle = (error) => `
     block w-full px-4 py-2.5 bg-gray-50 border rounded-xl transition-all outline-none text-sm
     ${error ? "border-red-500 ring-red-100" : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50"}

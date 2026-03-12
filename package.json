@@ -17,6 +17,7 @@
     "flowbite": "^4.0.1",
     "flowbite-react": "^0.12.16",
     "lucide-react": "^0.562.0",
+    "npm-check-updates": "^19.6.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.71.1",

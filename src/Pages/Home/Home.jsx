@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { Bookmark, ChevronDown, ChevronUp, Home as HomeIcon, ImageUp, Layout, Users } from 'lucide-react';
 import { useContext, useState } from 'react';
@@ -8,11 +8,13 @@ import Loader from '../../Components/Loader/Loader';
 import SuggestedUser from '../../Components/SuggestedUser/SuggestedUser';
 import { UserData } from '../../Context/UserDataContext';
 import { UserProfile } from '../../Context/UserProfile';
+import useGetAllSuggest from '../../Hooks/useGetAllSuggest';
 
 export default function Home() {
   const{token}=useContext(UserData);
   const {user} = useContext(UserProfile); 
   const [showSuggested, setShowSuggested] = useState(false);
+  const {suggestions}=useGetAllSuggest(token)
 
 const linkStyle = ({ isActive }) =>
     `flex cursor-pointer w-full items-center gap-4 px-4 py-3 rounded-xl text-sm font-bold transition  ${
@@ -73,28 +75,7 @@ const linkStyle = ({ isActive }) =>
     }}
 
 
-    const {data:suggestions =[]}=useQuery({
-    queryFn:getAllSuggest,
-    queryKey:["allSuggest"],
-    enabled:!!token
-  })
 
-
-
-  async function getAllSuggest(){
-    try{
-      const {data}= await axios.get('https://route-posts.routemisr.com/users/suggestions?limit=5',{
-        headers:{
-        AUTHORIZATION:`Bearer ${token}`
-        }
-      });
-
-      if(data.success){
-        return data.data.suggestions
-      }}catch(err){
-      throw err
-    }
-  }
 
 
 return(

@@ -5,36 +5,14 @@ import EmptyPosts from '../../Components/EmptyPosts/EmptyPosts';
 import PostCard from '../../Components/PostCard/PostCard';
 import PostSkeleton from '../../Components/PostSkeleton/PostSkeleton';
 import { UserData } from '../../Context/UserDataContext';
+import useGetSavePosts from '../../Hooks/useGetSavePosts';
 
 export default function Saved() {
   
   const {token}=useContext(UserData);
-  
+  const {isLoading,savedPosts}=useGetSavePosts(token);
 
-    async function getSavedPosts() {
-          try{
-        const {data} = await axios.get(`https://route-posts.routemisr.com/users/bookmarks`,{
-          headers:{
-        AUTHORIZATION:`Bearer ${token}`
-        }
-        })
-        if(data.success){
-          return data.data.bookmarks || []
-        }
-        
-        
-    }catch(err){
-      console.log(err ,"from profile") ;
-    }
-
-
-  }
-  
-  const {data:savedPosts=[],isLoading}=useQuery({
-    queryFn: getSavedPosts,
-    queryKey:['savedPosts'],
-    enabled:!!token
-  })
+ 
 
   if(isLoading){
     return <PostSkeleton />

@@ -1,16 +1,59 @@
-# React + Vite
+📱 Social App (Route Posts)
+A modern social media platform built with React.js that allows users to share thoughts, interact with posts, and manage their profiles. This project focuses on implementing clean UI/UX using Tailwind CSS and robust state management.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🚀 Features
+User Authentication: Secure Login and Registration using React Hook Form and Zod.
 
-Currently, two official plugins are available:
+Dynamic Newsfeed: Fetching and displaying posts from a RESTful API.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Post Management: Create, view, and interact with user posts.
 
-## React Compiler
+Responsive Design: Fully optimized for Mobile, Tablet, and Desktop using Tailwind CSS.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Local History & Caching: Optimized performance with efficient data fetching.
 
-## Expanding the ESLint configuration
+Skeleton Loaders: Smooth user experience during data loading.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🛠️ Tech Stack
+Frontend: React.js (Hooks, Context API).
+
+Styling: Tailwind CSS.
+
+Validation: Zod & React Hook Form.
+
+HTTP Client: Axios.
+
+Icons: React Icons .
+
+📦 Installation & Setup
+Clone the repository:
+
+Bash
+git clone https://github.com/Asemhamed/social-app
+Navigate to the project directory:
+
+Bash
+cd social-app
+Install dependencies:
+
+Bash
+npm install
+Start the development server:
+
+Bash
+npm run dev
+📂 Project Structure
+Plaintext
+src/
+├── assets/ # Images and static files
+├── components/ # Reusable UI components (PostCard, Navbar, etc.)
+├── context/ # Context API (UserContext)
+├── pages/ # Main views (Home, Login, Register)
+├── App.jsx # Main routing and logic
+└── main.jsx # Entry point
+Note: Replace the placeholder images with your actual project screenshots to make it more appealing.
+
+👨‍💻 Author
+Asem Hamed
+
+Student at CS University in Helwan.
